@@ -49,6 +49,33 @@ func GetUserByID(userID uint) (*models.User, error) {
 	return &user, nil
 }
 
+func GetUserByIDAndPass(userID uint, password string) (*models.User, error) {
+	var user models.User
+	result := database.DB.Where("id = ? and password = ?", userID, password).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
+}
+
+func GetUserByEmailAndPass(email, password string) (*models.User, error) {
+	var user models.User
+	result := database.DB.Where("email = ? and password = ?", email, password).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
+}
+
+func GetUserByPhoneAndPass(phone, password string) (*models.User, error) {
+	var user models.User
+	result := database.DB.Where("phone = ? and password = ?", phone, password).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
+}
+
 // UpdateUser 更新用户信息
 func UpdateUser(userID uint, updates map[string]interface{}) error {
 	result := database.DB.Model(&models.User{}).Where("id = ?", userID).Updates(updates)
